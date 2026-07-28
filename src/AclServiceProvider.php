@@ -6,7 +6,8 @@ namespace Nuewire\Acl;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
-use Livewire\Livewire;
+use Nuewire\Support\LivewireComponentRegistrar;
+use Nuewire\Support\NuewirePaths;
 use Nuewire\Acl\Access\SpatieAccessManager;
 use Nuewire\Acl\Commands\InstallCommand;
 use Nuewire\Acl\Commands\SyncPermissionsCommand;
@@ -44,37 +45,30 @@ final class AclServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $paths = $this->app->make(NuewirePaths::class);
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'nuewire-acl');
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'nuewire-acl');
         $this->registerLivewireComponents();
         $this->registerSuperAdminGate();
 
         $this->publishes([
-            __DIR__.'/../config/nuewire/acl.php' => config_path('nuewire/acl.php'),
+            __DIR__.'/../config/nuewire/acl.php' => $paths->configFile('acl'),
         ], 'nuewire-acl-config');
 
         $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/nuewire/acl'),
+            __DIR__.'/../resources/views' => $paths->publishedViews('acl'),
         ], 'nuewire-acl-views');
 
         $this->publishes([
-            __DIR__.'/../resources/lang' => lang_path('vendor/nuewire/acl'),
+            __DIR__.'/../resources/lang' => $paths->publishedTranslations('acl'),
         ], 'nuewire-acl-translations');
     }
 
     private function registerLivewireComponents(): void
     {
-        $livewire = $this->app->make('livewire');
-
-        if (method_exists($livewire, 'addComponent')) {
-            $livewire->addComponent('nuewire::acl', null, Acl::class);
-            $livewire->addComponent('nuewire::user-access', null, UserAccess::class);
-
-            return;
-        }
-
-        Livewire::component('nuewire::acl', Acl::class);
-        Livewire::component('nuewire::user-access', UserAccess::class);
+        $registrar = $this->app->make(LivewireComponentRegistrar::class);
+        $registrar->register('nuewire::acl', Acl::class);
+        $registrar->register('nuewire::user-access', UserAccess::class);
     }
 
     private function registerPlatformNavigation(): void

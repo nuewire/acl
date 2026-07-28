@@ -17,7 +17,6 @@
         }
     ],
     "require": {
-        "php": "^8.2",
         "illuminate/auth": "^11.0|^12.0|^13.0",
         "illuminate/console": "^11.0|^12.0|^13.0",
         "illuminate/contracts": "^11.0|^12.0|^13.0",
@@ -27,7 +26,9 @@
         "illuminate/validation": "^11.0|^12.0|^13.0",
         "illuminate/view": "^11.0|^12.0|^13.0",
         "livewire/livewire": "^3.6|^4.0.3",
+        "nuewire/support": "^1.0",
         "nuewire/users": "^1.0",
+        "php": "^8.2",
         "spatie/laravel-permission": "^6.0|^7.0|^8.0"
     },
     "require-dev": {

@@ -7,6 +7,7 @@ namespace Nuewire\Acl\Tests;
 use Livewire\LivewireServiceProvider;
 use Nuewire\Acl\AclServiceProvider;
 use Nuewire\Users\UsersServiceProvider;
+use Nuewire\Support\SupportServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Spatie\Permission\PermissionServiceProvider;
 
@@ -15,6 +16,7 @@ abstract class TestCase extends Orchestra
     protected function getPackageProviders($app): array
     {
         return [
+            SupportServiceProvider::class,
             LivewireServiceProvider::class,
             PermissionServiceProvider::class,
             UsersServiceProvider::class,
