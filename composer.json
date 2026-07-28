@@ -1,0 +1,62 @@
+{
+    "name": "nuewire/acl",
+    "description": "Optional roles and permissions UI for Nuewire users, powered by spatie/laravel-permission.",
+    "keywords": [
+        "laravel",
+        "livewire",
+        "acl",
+        "roles",
+        "permissions",
+        "spatie"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nuewire"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "illuminate/auth": "^11.0|^12.0|^13.0",
+        "illuminate/console": "^11.0|^12.0|^13.0",
+        "illuminate/contracts": "^11.0|^12.0|^13.0",
+        "illuminate/database": "^11.0|^12.0|^13.0",
+        "illuminate/support": "^11.0|^12.0|^13.0",
+        "illuminate/translation": "^11.0|^12.0|^13.0",
+        "illuminate/validation": "^11.0|^12.0|^13.0",
+        "illuminate/view": "^11.0|^12.0|^13.0",
+        "livewire/livewire": "^3.6|^4.0.3",
+        "nuewire/users": "^1.0",
+        "spatie/laravel-permission": "^6.0|^7.0|^8.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^9.0|^10.0|^11.0",
+        "phpunit/phpunit": "^11.0|^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nuewire\\Acl\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Nuewire\\Acl\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Nuewire\\Acl\\AclServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "suggest": {
+        "nuewire/platform": "Adds ACL management to the Nuewire admin navigation."
+    }
+}
