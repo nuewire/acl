@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.0
+
+- Added role count, permission count, and role distribution dashboard widgets.
+
 ## 1.2.1
 
 - Replaced `nuewire::acl` and `nuewire::user-access` with portable Livewire aliases.

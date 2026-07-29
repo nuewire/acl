@@ -40,6 +40,7 @@ final class AclServiceProvider extends ServiceProvider
         }
 
         $this->registerPlatformNavigation();
+        $this->registerPlatformDashboard();
         $this->registerCorePermissions();
     }
 
@@ -105,6 +106,107 @@ final class AclServiceProvider extends ServiceProvider
                 'permission' => 'acl.view',
                 'icon' => 'shield',
                 'order' => 10,
+            ]);
+        });
+    }
+
+
+    private function registerPlatformDashboard(): void
+    {
+        $registryClass = 'Nuewire\\Platform\\Dashboard\\DashboardRegistry';
+
+        $this->app->afterResolving($registryClass, static function (object $registry): void {
+            if (! method_exists($registry, 'register')) {
+                return;
+            }
+
+            if (method_exists($registry, 'registerGroup')) {
+                $registry->registerGroup('access', [
+                    'label' => ['id' => 'Akses', 'en' => 'Access'],
+                    'order' => 30,
+                ]);
+            }
+
+            $registry->register('acl.roles-total', [
+                'group' => 'access',
+                'label' => ['id' => 'Total Role', 'en' => 'Total Roles'],
+                'description' => ['id' => 'Role yang tersedia pada guard ACL.', 'en' => 'Roles available for the ACL guard.'],
+                'type' => 'stat',
+                'permission' => 'acl.view',
+                'width' => 3,
+                'default' => false,
+                'cache_ttl' => 300,
+                'cache_scope' => 'global',
+                'visible' => static fn (): bool => class_exists('Spatie\\Permission\\Models\\Role'),
+                'resolver' => static function (object $context): array {
+                    $count = app(\Nuewire\Acl\Support\SpatieModels::class)->roles()->count();
+
+                    return [
+                        'value' => number_format($count),
+                        'meta' => $context->locale === 'en' ? 'Configured roles' : 'Role terkonfigurasi',
+                        'url' => $context->route('settings', 'roles'),
+                    ];
+                },
+                'order' => 10,
+            ]);
+
+            $registry->register('acl.permissions-total', [
+                'group' => 'access',
+                'label' => ['id' => 'Total Permission', 'en' => 'Total Permissions'],
+                'description' => ['id' => 'Permission yang telah disinkronkan.', 'en' => 'Permissions that have been synchronized.'],
+                'type' => 'stat',
+                'permission' => 'acl.view',
+                'width' => 3,
+                'default' => false,
+                'cache_ttl' => 300,
+                'cache_scope' => 'global',
+                'visible' => static fn (): bool => class_exists('Spatie\\Permission\\Models\\Permission'),
+                'resolver' => static function (object $context): array {
+                    $count = app(\Nuewire\Acl\Support\SpatieModels::class)->permissions()->count();
+
+                    return [
+                        'value' => number_format($count),
+                        'meta' => $context->locale === 'en' ? 'Synchronized abilities' : 'Kemampuan tersinkron',
+                        'url' => $context->route('settings', 'roles'),
+                    ];
+                },
+                'order' => 20,
+            ]);
+
+            $registry->register('acl.role-distribution', [
+                'group' => 'access',
+                'label' => ['id' => 'Distribusi Role', 'en' => 'Role Distribution'],
+                'description' => ['id' => 'Jumlah pengguna pada setiap role.', 'en' => 'User count assigned to each role.'],
+                'type' => 'table',
+                'permission' => 'acl.view',
+                'width' => 6,
+                'default' => false,
+                'cache_ttl' => 300,
+                'cache_scope' => 'global',
+                'visible' => static fn (): bool => class_exists('Spatie\\Permission\\Models\\Role'),
+                'resolver' => static function (object $context): array {
+                    $rows = app(\Nuewire\Acl\Support\SpatieModels::class)->roles()
+                        ->withCount('users')
+                        ->orderByDesc('users_count')
+                        ->limit(8)
+                        ->get()
+                        ->map(static fn ($role): array => [
+                            'role' => (string) $role->getAttribute('name'),
+                            'guard' => (string) $role->getAttribute('guard_name'),
+                            'users' => number_format((int) $role->getAttribute('users_count')),
+                        ])->all();
+
+                    return [
+                        'columns' => [
+                            ['key' => 'role', 'label' => 'Role'],
+                            ['key' => 'guard', 'label' => 'Guard'],
+                            ['key' => 'users', 'label' => $context->locale === 'en' ? 'Users' : 'Pengguna'],
+                        ],
+                        'rows' => $rows,
+                        'url' => $context->route('settings', 'roles'),
+                    ];
+                },
+                'order' => 30,
             ]);
         });
     }
