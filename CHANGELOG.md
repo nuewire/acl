@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.1
+
+- Replaced `nuewire::acl` and `nuewire::user-access` with portable Livewire aliases.
+
 ## 1.2.0
 
 - Registered Roles & Permissions as `acl.roles` under Settings → User Management for Platform 2.

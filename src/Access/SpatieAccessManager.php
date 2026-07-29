@@ -52,7 +52,7 @@ final class SpatieAccessManager implements AccessManager
             return;
         }
 
-        // ACL assignment is handled by nuewire::user-access after ACL is ready.
+        // ACL assignment is handled by nuewire-user-access after ACL is ready.
     }
 
     public function summary(Model $user): array
@@ -72,7 +72,7 @@ final class SpatieAccessManager implements AccessManager
 
     public function component(): ?string
     {
-        return $this->state->ready() ? 'nuewire::user-access' : null;
+        return $this->state->ready() ? 'nuewire-user-access' : null;
     }
 
     public function assertCanDelete(Model $user, Authenticatable $actor): void

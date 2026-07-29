@@ -67,8 +67,8 @@ final class AclServiceProvider extends ServiceProvider
     private function registerLivewireComponents(): void
     {
         $registrar = $this->app->make(LivewireComponentRegistrar::class);
-        $registrar->register('nuewire::acl', Acl::class);
-        $registrar->register('nuewire::user-access', UserAccess::class);
+        $registrar->register('nuewire-acl', Acl::class);
+        $registrar->register('nuewire-user-access', UserAccess::class);
     }
 
     private function registerPlatformNavigation(): void
@@ -85,7 +85,7 @@ final class AclServiceProvider extends ServiceProvider
                     'label' => ['id' => 'Akses', 'en' => 'Access'],
                     'description' => ['id' => 'Kelola role dan permission.', 'en' => 'Manage roles and permissions.'],
                     'group' => ['id' => 'Manajemen', 'en' => 'Management'],
-                    'component' => 'nuewire::acl',
+                    'component' => 'nuewire-acl',
                     'permission' => 'acl.view',
                     'icon' => 'A',
                     'order' => 20,
@@ -101,7 +101,7 @@ final class AclServiceProvider extends ServiceProvider
                 'aliases' => ['acl'],
                 'label' => ['id' => 'Role & Permission', 'en' => 'Roles & Permissions'],
                 'description' => ['id' => 'Kelola role dan permission.', 'en' => 'Manage roles and permissions.'],
-                'component' => 'nuewire::acl',
+                'component' => 'nuewire-acl',
                 'permission' => 'acl.view',
                 'icon' => 'shield',
                 'order' => 10,
