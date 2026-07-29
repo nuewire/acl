@@ -38,7 +38,7 @@ Existing `is_admin=true` users are migrated to the `administrator` role. The sel
 <livewire:nuewire::acl />
 ```
 
-The Users component switches automatically from simple administrator mode to ACL mode after the permission tables and a super admin are ready.
+The Users component switches automatically from simple administrator mode to ACL mode after the permission tables and a super admin are ready. With Platform 2, ACL registers **Settings → User Management → Roles & Permissions** at `/admin/settings/roles`.
 
 ## Commands
 

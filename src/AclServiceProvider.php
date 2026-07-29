@@ -73,21 +73,38 @@ final class AclServiceProvider extends ServiceProvider
 
     private function registerPlatformNavigation(): void
     {
-        $registryClass = 'Nuewire\\Platform\\Navigation\\NavigationRegistry';
+        $registryClass = 'Nuewire\Platform\Navigation\NavigationRegistry';
 
         $this->app->afterResolving($registryClass, static function (object $registry): void {
             if (! method_exists($registry, 'register')) {
                 return;
             }
 
-            $registry->register('acl', [
-                'label' => ['id' => 'Akses', 'en' => 'Access'],
+            if (! method_exists($registry, 'registerArea')) {
+                $registry->register('acl', [
+                    'label' => ['id' => 'Akses', 'en' => 'Access'],
+                    'description' => ['id' => 'Kelola role dan permission.', 'en' => 'Manage roles and permissions.'],
+                    'group' => ['id' => 'Manajemen', 'en' => 'Management'],
+                    'component' => 'nuewire::acl',
+                    'permission' => 'acl.view',
+                    'icon' => 'A',
+                    'order' => 20,
+                ]);
+
+                return;
+            }
+
+            $registry->register('acl.roles', [
+                'area' => 'settings',
+                'group' => 'user-management',
+                'slug' => 'roles',
+                'aliases' => ['acl'],
+                'label' => ['id' => 'Role & Permission', 'en' => 'Roles & Permissions'],
                 'description' => ['id' => 'Kelola role dan permission.', 'en' => 'Manage roles and permissions.'],
-                'group' => ['id' => 'Manajemen', 'en' => 'Management'],
                 'component' => 'nuewire::acl',
                 'permission' => 'acl.view',
-                'icon' => 'A',
-                'order' => 20,
+                'icon' => 'shield',
+                'order' => 10,
             ]);
         });
     }

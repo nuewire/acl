@@ -58,6 +58,6 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "suggest": {
-        "nuewire/platform": "Adds ACL management to the Nuewire admin navigation."
+        "nuewire/platform": "Adds Roles & Permissions under Settings > User Management."
     }
 }
